@@ -18,8 +18,10 @@ import { adminActions, userActions } from "../store";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  
   const [value, setValue] = useState(0); // Set initial value to 0
   const [movies, setMovies] = useState([]);
 

@@ -5,8 +5,10 @@ import { useParams, useLocation } from "react-router-dom";
 import { getMovieDetails, newBooking } from "../../api-helpers/api-helpers";
 import './Booking.css'; // Import CSS
 import screenImg from "../../Img/5ff3a50c.webp"; // Update with the actual path to your image
+import { useNavigate } from "react-router-dom";
 
 const Booking = () => {
+  const navigate = useNavigate();
   const Location = useLocation();
   const data = Location.state;
   const [movie, setMovie] = useState(data);
@@ -67,8 +69,12 @@ const Booking = () => {
       setError("Please fill in all the fields.");
       return;
     }
+
     newBooking({ ...inputs, movie: movie._id, seats: selectedSeats })
-      .then((res) => console.log("Booking successful:", res))
+      .then((res) => {
+        console.log("Booking successful:", res);
+        navigate("/payment", { state: { seats: selectedSeats, totalCost, date: inputs.date } });
+      })
       .catch((err) => setError("Booking failed. Please try again."));
   };
 
@@ -85,7 +91,7 @@ const Booking = () => {
           </Typography>
           <Box display="flex" justifyContent="center">
             <Box display="flex" flexDirection="column" paddingTop={3} width="50%">
-              <img width="80%" height="300px" src={movie.posterUrl} alt={movie.title} />
+            <img className="poster-image" src={movie.posterUrl} alt={movie.title} />
               <Box width="80%" marginTop={3} padding={2}>
                 <Typography paddingTop={2}>{movie.description}</Typography>
                 <Typography fontWeight="bold" marginTop={1}>

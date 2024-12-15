@@ -1,58 +1,89 @@
-import { Box, Button, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getAllMovies } from "../api-helpers/api-helpers";
-import MovieItem from "./Movies/MovieItem";
+import { Box, Button, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import MovieItem from './Movies/MovieItem';
+import { Link } from 'react-router-dom';
+import { getAllMovies } from '../api-helpers/api-helpers';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
+
   useEffect(() => {
     getAllMovies()
-      .then((data) => setMovies(data.movies))
+      .then((data) => setMovies(data.movies)) // Assuming 'movies' is the response property
       .catch((err) => console.log(err));
   }, []);
+
   return (
-    <Box width={"100%"} height="100%" margin="auto" marginTop={2}>
-      <Box margin={"auto"} width="80%" height={"40vh"} padding={2}>
+    <Box
+      sx={{
+        minHeight: "100vh", // Ensures the entire viewport is filled
+        backgroundColor: "black", // Black background
+        color: "white", // Text color
+        margin: 0,
+        padding: 0,
+      }}
+    >
+      <Box
+        margin="auto"
+        width="100%"
+        height={{ xs: '30vh', sm: '50vh' }} // Adjust height for different breakpoints
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        overflow="hidden" // Prevents overflow
+      >
         <img
-          src="https://i.ytimg.com/vi/bweRG6WueuM/maxresdefault.jpg"
-          alt="Brahmastra"
-          width={"100%"}
-          height={"100%"}
+          src="https://i.ytimg.com/vi/e7RvFZ6XtkI/maxresdefault.jpg"
+          alt="Spider Man"
+          style={{
+            objectFit: 'cover', // Makes the image cover the box completely
+            width: '100%',      // Ensures it spans the full width of the container
+            height: '100%',     // Makes it take the full height of the container
+          }}
         />
       </Box>
-      <Box padding={5} margin="auto">
-        <Typography variant="h4" textAlign={"center"}>
-          Latest Releases
+
+
+      <Box padding={{ xs: 3, sm: 5 }} margin="auto">
+        <Typography variant="h4" textAlign="center" sx={{ color: "white" }}>
+          Latest Release
         </Typography>
       </Box>
+
       <Box
-        margin={"auto"}
         display="flex"
-        width="80%"
-        justifyContent={"center"}
-        alignItems="center"
+        width="100%"
+        justifyContent="center"
         flexWrap="wrap"
+        gap={3}
+        sx={{ marginBottom: 3 }}
       >
         {movies &&
-          movies
-            .slice(0, 4)
-            .map((movie, index) => (
-              <MovieItem
-                id={movie._id}
-                title={movie.title}
-                posterUrl={movie.posterUrl}
-                releaseDate={movie.releaseDate}
-                key={movie._id}
-              />
-            ))}
+          movies.slice(0, 6).map((movie) => (
+            <MovieItem
+              id={movie._id}
+              title={movie.title}
+              posterUrl={movie.posterUrl}
+              releaseDate={movie.releaseDate}
+              key={movie._id}
+            />
+          ))}
       </Box>
-      <Box display="flex" padding={5} margin="auto">
+
+      <Box display={'flex'} padding={5} margin={'auto'}>
         <Button
-          LinkComponent={Link}
+          component={Link}
           to="/movies"
           variant="outlined"
-          sx={{ margin: "auto", color: "#2b2d42" }}
+          sx={{
+            margin: "auto",
+            color: "white",
+            borderColor: "white",
+            "&:hover": {
+              backgroundColor: "#333",
+              borderColor: "#888",
+            },
+          }}
         >
           View All Movies
         </Button>
